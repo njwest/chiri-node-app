@@ -22,7 +22,7 @@ var songSearch = function(songQuery){
           song = data.tracks.items[0];
           songData = ("Artist: " + song.artists[0].name + "\n" + "Song title: " + song.name + "\n" + "Album: " + song.album.name + "\n" + "Preview: " + song.preview_url + "\n");
           console.log(songData);
-          logData(songData);
+          logData("spotify-this-song at " + Date() + songData + "  ---END ENTRY---  ");
         } else if (error){
           console.log(error);
         }
@@ -31,9 +31,12 @@ var songSearch = function(songQuery){
 }
 
 var movieSearch = function(movieQuery){
+  var movieData;
   request('http://www.omdbapi.com/?t=' + movieQuery +'&plot=short&r=json', function (error, response, body) {
     if (!error && response.statusCode == 200) {
-        console.log("Title: " + JSON.parse(body)["Title"] + "\n Year: " + JSON.parse(body)["Year"] + "\n IMDB Rating: " + JSON.parse(body)["imdbRating"] + "\n Country: " + JSON.parse(body)["Country"] + "\n Language(s): " + JSON.parse(body)["Language"] + "\nPlot: " + JSON.parse(body)["Plot"] + "\nCast: " + JSON.parse(body)["Actors"]);
+      movieData = "Title: " + JSON.parse(body)["Title"] + "\n Year: " + JSON.parse(body)["Year"] + "\n IMDB Rating: " + JSON.parse(body)["imdbRating"] + "\n Country: " + JSON.parse(body)["Country"] + "\n Language(s): " + JSON.parse(body)["Language"] + "\nPlot: " + JSON.parse(body)["Plot"] + "\nCast: " + JSON.parse(body)["Actors"]
+        console.log(movieData);
+        logData("movie-this at " + Date() + movieData + "  ---END ENTRY---  ");
     } else{
       console.log(error);
     }
@@ -56,7 +59,7 @@ switch(process.argv[2]){
         for (var i = 0; i < tweets.length; i++){
         record = (tweets[i].text + "\n Tweeted at: " + tweets[i].created_at + "\n")
         console.log(record);
-        logData("my-tweets at " + Date() + "\n" + record + "---END ENTRY---");
+        logData("my-tweets at " + Date() + "\n" + record + "  ---END ENTRY---  ");
         }            
       }else if (error){ 
         console.log(error);
@@ -69,13 +72,15 @@ switch(process.argv[2]){
     else{
       songSearch(slice);
     }
+    break;
   case "movie-this":
-    if(slice != '[object Undefined]'){
+    if(slice != ''){
         movieSearch(slice);
     }
     else{
       movieSearch("Mr+Nobody");
     }
+    break;
 //end switch     
 }
 console.log("Search parameter: " + slice);
