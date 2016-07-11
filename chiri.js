@@ -30,6 +30,16 @@ var songSearch = function(songQuery){
     )
 }
 
+var movieSearch = function(movieQuery){
+  request('http://www.omdbapi.com/?t=' + movieQuery +'&plot=short&r=json', function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        console.log("Title: " + JSON.parse(body)["Title"] + "\n Year: " + JSON.parse(body)["Year"] + "\n IMDB Rating: " + JSON.parse(body)["imdbRating"] + "\n Country: " + JSON.parse(body)["Country"] + "\n Language(s): " + JSON.parse(body)["Language"] + "\nPlot: " + JSON.parse(body)["Plot"] + "\nCast: " + JSON.parse(body)["Actors"]);
+    } else{
+      console.log(error);
+    }
+});
+}
+
 switch(process.argv[2]){
   case "my-tweets":
     var client = new twitter({
@@ -59,20 +69,13 @@ switch(process.argv[2]){
     else{
       songSearch(slice);
     }
+  case "movie-this":
+    if(slice != '[object Undefined]'){
+        movieSearch(slice);
+    }
+    else{
+      movieSearch("Mr+Nobody");
+    }
 //end switch     
 }
-
-// } else if(process.argv[2] == "spotify-this-song"){
-//   console.log("lol");
-// // console log song artist, song name, preview link of song, album of song, song name
-// // output what's my age again by blink 182 if process.argv[3] is undefined
-// } else if(process.argv[2] == "movie-this"){
-//     console.log("lol");
-
-//   // console.log title, year, imdb rating, country, language, plot, actors
-//   // console.log Mr Nobody movie info if process.argv[3] is undefined
-// } else if(process.argv[2] == "do-what-it-says"){
-//     console.log("lol");
-
-//   // take in the text from random.txt and use it as "node liri.js [contents 1 = process.argv[2] [contents 2 = process.argv[3]"
-// }
+console.log("Search parameter: " + slice);
