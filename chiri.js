@@ -43,6 +43,17 @@ var movieSearch = function(movieQuery){
 });
 }
 
+var doIt = function(){
+  fs.readFile('./random.txt', "utf8", function(error, data){
+    if(!error){
+      data = data.split(',');
+      songSearch(data[1]);
+    } else{
+      console.log(error);
+    }
+  })
+}
+
 switch(process.argv[2]){
   case "my-tweets":
     var client = new twitter({
@@ -81,6 +92,12 @@ switch(process.argv[2]){
       movieSearch("Mr+Nobody");
     }
     break;
+  case "do-what-it-says":
+    doIt(process.argv.slice(3));
+    break;
+
+
+
 //end switch     
 }
 console.log("Search parameter: " + slice);
